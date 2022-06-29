@@ -5,17 +5,25 @@ import {ListItem} from "./components/ListItem";
 import {AddArea} from "./components/AddArea";
 import {ThemeSwitcher} from "./components/Theme";
 
-import {UseAppSelector} from "./redux/hooks/useAppSelector";
+import {useAppSelector} from "./redux/hooks/useAppSelector";
 import {useDispatch} from "react-redux";
 import {setThemeColor, setThemeStatus} from "./redux/reducers/themeReducer";
+import { ThemeProvider, DefaultTheme } from "styled-components";
+import usePersistedState from "./utils/UsePersistedState";
+import dark from "./themes/dark";
+import light from "./themes/light";
+import Switch from "react-switch"
 
 const App = () => {
 
-  const dispatch = useDispatch();
-  const theme = UseAppSelector(state => state.theme)
 
-  function switchTheme(newTheme: string) {dispatch(setThemeStatus(newTheme))};
-  function switchColor(newColor: string) {dispatch(setThemeColor(newColor))};
+  const theme = useAppSelector(state => state.theme)
+
+  const [Theme, setTheme] = usePersistedState('Theme', dark);
+
+  function toggleTheme() {
+    setTheme(Theme.title === "dark" ? light : dark)
+  }
 
   const[list, setList] = useState<Item[]>([
     {id: 1, name: "comprar pão", done: false},
@@ -33,28 +41,38 @@ const App = () => {
     setList(newList);
   }
 
-  function handleSwitchTheme() {
-    switchTheme(theme.status === "Dark" ? "Light" : "Dark");
-    switchColor(theme.color === "Light" ? "Dark" : "Light");
-  }
+
 
   return (
-    <C.Container>
-      <C.Area>
-        <C.Header>Lista de Tarefas</C.Header>
+    <ThemeProvider theme={Theme}>
+        <C.Container  toggleTheme={toggleTheme}>
+        <C.Area>
+          <C.Header>
+            Lista de Tarefas
 
-        <ThemeSwitcher onClick={handleSwitchTheme}/>
+            <Switch 
+              onChange={toggleTheme}
+              checked={theme.status === "dark"}
+              checkedIcon={false}
+              uncheckedIcon={false}
+              height={20}
+              width={50}
+              handleDiameter={30}
+              onColor={'#797a81'}
+              offColor={'#17188f'}
+            />
 
-        <button onClick={handleSwitchTheme}>Tema</button>
+          </C.Header>
 
-        <AddArea onEnter={handleAddTask}/>
+          <AddArea onEnter={handleAddTask}/>
 
-        {list.map((item, index)=>(
-          <ListItem key={index} Item={item}/>
-        ) )}
+          {list.map((item, index)=>(
+            <ListItem key={index} Item={item}/>
+          ) )}
 
-      </C.Area>
-    </C.Container>
+        </C.Area>
+      </C.Container>
+    </ThemeProvider>
   );
 }
 
