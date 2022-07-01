@@ -11,6 +11,7 @@ export const Container = styled.div<Props>`
     background-color: ${props => props.theme.colors.background};
     color: ${props => props.theme.colors.text}; ;
     min-height: 100vh;
+    transition: all ease 0.5s;
 `
 ;
 
@@ -21,7 +22,7 @@ export const Area = styled.div`
 `;
 
 
-export const Header = styled.h1`
+export const Header = styled.div`
     margin: 0;
     padding: 0;
     color: ${props => props.theme.colors.text};
@@ -32,9 +33,7 @@ export const Header = styled.h1`
     justify-content: space-between;
     align-items: center;
     font-size: 40px;
+    font-weight: bold;
 `;
 
-export const Button = styled.button`
-    
-`;
 

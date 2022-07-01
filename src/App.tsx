@@ -3,12 +3,9 @@ import * as C from "./App.styles";
 import {Item} from "./types/Item";
 import {ListItem} from "./components/ListItem";
 import {AddArea} from "./components/AddArea";
-import {ThemeSwitcher} from "./components/Theme";
 
 import {useAppSelector} from "./redux/hooks/useAppSelector";
-import {useDispatch} from "react-redux";
-import {setThemeColor, setThemeStatus} from "./redux/reducers/themeReducer";
-import { ThemeProvider, DefaultTheme } from "styled-components";
+import { ThemeProvider} from "styled-components";
 import usePersistedState from "./utils/UsePersistedState";
 import dark from "./themes/dark";
 import light from "./themes/light";
@@ -41,7 +38,15 @@ const App = () => {
     setList(newList);
   }
 
-
+  const handleTaskChange = (id: number, done: boolean) => {
+    let newList = [...list];
+    for(let i in newList) {
+      if(newList[i].id === id) {
+        newList[i].done = done;
+      }
+    }
+    setList(newList);
+  }
 
   return (
     <ThemeProvider theme={Theme}>
@@ -57,7 +62,7 @@ const App = () => {
               uncheckedIcon={false}
               height={20}
               width={50}
-              handleDiameter={30}
+              handleDiameter={25}
               onColor={'#797a81'}
               offColor={'#17188f'}
             />
@@ -67,7 +72,7 @@ const App = () => {
           <AddArea onEnter={handleAddTask}/>
 
           {list.map((item, index)=>(
-            <ListItem key={index} Item={item}/>
+            <ListItem key={index} Item={item} onChange={handleTaskChange}/>
           ) )}
 
         </C.Area>

@@ -8,5 +8,14 @@ declare module 'styled-componnets' {
             background: string;
             text: string;
         },
+
+        input: {
+            background: string;
+            text: string;
+        }
+
+        search: {
+            text: string;
+        }
     }
 }
