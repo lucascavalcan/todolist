@@ -57,7 +57,7 @@ const App = () => {
 
             <Switch 
               onChange={toggleTheme}
-              checked={theme.status === "dark"}
+              checked={Theme.title === "dark"}
               checkedIcon={false}
               uncheckedIcon={false}
               height={20}
